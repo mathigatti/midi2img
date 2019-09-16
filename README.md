@@ -36,3 +36,9 @@ Converts image of size (106,100) into a midi file.
 python img2midi.py IMAGE_PATH
 python img2midi.py samples/image.png
 ```
+
+Using the image from the sample folder it generates as expected a midi file with decreasing and increasing notes.
+<div style="text-align:center">
+<img src="samples/image.png" width="400" height="400" />
+</div>
+
