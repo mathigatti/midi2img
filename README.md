@@ -24,8 +24,9 @@ python midi2img.py samples/zelda.mid 1
 ```
 
 Using the sample zelda midi the generated image for the first part of the song looks like this
-
+<div style="text-align:center">
 <img src="samples/converted_samples/zelda_Piano_0.png" width="400" height="400" />
+</div>
 
 ### Image to MIDI
 
