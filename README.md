@@ -1,6 +1,6 @@
 # MIDI to Image conversion
 
-This script relies on the music21 library to parse and create MIDI files. The expected images have a fixed size of 106 rows and 100 columns. 106 is the number of different notes (From 21 (`A0`) to 127 (`G9`)) and 100 is the length of the song, if a song is longer than that the script splits the song and generates several images. Each image represents one instrument, if a song has several instruments different images are generated for each.
+This script relies on the music21 library to parse and create MIDI files. The expected images have a fixed size of 106 rows and 100 columns. 106 is the number of different notes (From 21 (`A0`) to 127 (`G9`)) and 100 is the length of the song, if a song is longer than that the script splits the song and generates several images. Each image represents one instrument, if a song has several instruments different images are generated for each. Each pixel represents a note played for 1/4 beats, this can be changed with the `resolution` variable.
 
 ## Requirements
 - python 3
