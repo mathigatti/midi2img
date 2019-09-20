@@ -14,7 +14,6 @@ This script relies on the music21 library to parse and create MIDI files. The ex
   - music21
   - imageio
   - numpy
-  - imageio
   - PIL (Pillow)
 
 ## Usage
