@@ -6,7 +6,7 @@ This script relies on the music21 library to parse and create MIDI files. The ex
 ## Demo
 [Here](https://www.youtube.com/watch?v=YJ-TEpLwuns) is a video demonstration using the program to generate midis and images, then we use it for an artistic performance.
 
-[![IMAGE ALT TEXT HERE](https://i.ytimg.com/vi/YJ-TEpLwuns/maxresdefault.jpg)](https://www.youtube.com/watch?v=wvbV75Tw_24)
+[![IMAGE ALT TEXT HERE](https://i.ytimg.com/vi/YJ-TEpLwuns/maxresdefault.jpg)](https://www.youtube.com/watch?v=YJ-TEpLwuns)
 
 ## Requirements
 - python 3
