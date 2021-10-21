@@ -25,7 +25,7 @@ There are two scripts, one for converting a MIDI into images and the other one t
 
 ### MIDI to Image
 
-REPETITIONS parameter indicates in case the song is too long how many parts of the song to convert into an image. If it is 1 it only extracts the first part of the song.
+REPETITIONS is an optional parameter which indicates, in case the song is too long, how many parts of the song to convert into an image. If it is 1 it only extracts the first part of the song. If you don't specify it then it generates as many images as needed to cover all the song.
 
 ```
 python midi2img.py MIDI_FILE_PATH REPETITIONS

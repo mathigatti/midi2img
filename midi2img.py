@@ -68,9 +68,11 @@ def midi2image(midi_path):
 
         index = 0
         prev_index = 0
+        new_index = 0
         repetitions = 0
-        while repetitions < int(sys.argv[2]):
-            if prev_index >= len(values["pitch"]):
+        while (new_index == 0 or new_index > prev_index) and prev_index < len(values["pitch"]):
+            prev_index = new_index
+            if len(sys.argv) >= 3 and repetitions >= int(sys.argv[2]):
                 break
 
             matrix = np.zeros((upperBoundNote-lowerBoundNote,maxSongLength))
@@ -90,10 +92,10 @@ def midi2image(midi_path):
                         if j - index*maxSongLength >= 0:
                             matrix[pitch-lowerBoundNote,j - index*maxSongLength] = 255
                 else:
-                    prev_index = i
+                    new_index = i
                     break
 
-            imwrite(midi_path.split("/")[-1].replace(".mid",f"_{instrument_name}_{index}.png"),matrix)
+            imwrite(midi_path.split("/")[-1].replace(".mid",f"_{instrument_name}_{index}.png"),matrix.astype(np.uint8))
             index += 1
             repetitions+=1
 
