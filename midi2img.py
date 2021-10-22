@@ -1,5 +1,4 @@
 from music21 import converter, instrument, note, chord
-import json
 import sys
 import numpy as np
 from imageio import imwrite
@@ -36,7 +35,8 @@ def get_notes(notes_to_parse):
 
     return {"start":start, "pitch":notes, "dur":durations}
 
-def midi2image(midi_path):
+
+def midi2image(midi_path, max_repetitions = float("inf"), resolution = 0.25, lowerBoundNote = 21, upperBoundNote = 127, maxSongLength = 100):
     mid = converter.parse(midi_path)
 
     instruments = instrument.partitionByInstrument(mid)
@@ -48,57 +48,52 @@ def midi2image(midi_path):
         for instrument_i in instruments.parts:
             notes_to_parse = instrument_i.recurse()
 
+            notes_data = get_notes(notes_to_parse)
+            if len(notes_data["start"]) == 0:
+                continue
+
             if instrument_i.partName is None:
-                data["instrument_{}".format(i)] = get_notes(notes_to_parse)
+                data["instrument_{}".format(i)] = notes_data
                 i+=1
             else:
-                data[instrument_i.partName] = get_notes(notes_to_parse)
+                data[instrument_i.partName] = notes_data
 
     except:
         notes_to_parse = mid.flat.notes
-        data["instrument_0".format(i)] = get_notes(notes_to_parse)
-
-    resolution = 0.25
+        data["instrument_0"] = get_notes(notes_to_parse)
 
     for instrument_name, values in data.items():
         # https://en.wikipedia.org/wiki/Scientific_pitch_notation#Similar_systems
-        upperBoundNote = 127
-        lowerBoundNote = 21
-        maxSongLength = 100
+
+        pitches = values["pitch"]
+        durs = values["dur"]
+        starts = values["start"]
 
         index = 0
-        prev_index = 0
-        new_index = 0
-        repetitions = 0
-        while (new_index == 0 or new_index > prev_index) and prev_index < len(values["pitch"]):
-            prev_index = new_index
-            if len(sys.argv) >= 3 and repetitions >= int(sys.argv[2]):
-                break
-
+        while index < max_repetitions:
             matrix = np.zeros((upperBoundNote-lowerBoundNote,maxSongLength))
 
-            pitchs = values["pitch"]
-            durs = values["dur"]
-            starts = values["start"]
 
-            for i in range(prev_index,len(pitchs)):
-                pitch = pitchs[i]
+            for dur, start, pitch in zip(durs, starts, pitches):
+                dur = int(dur/resolution)
+                start = int(start/resolution)
 
-                dur = int(durs[i]/resolution)
-                start = int(starts[i]/resolution)
-
-                if dur+start - index*maxSongLength < maxSongLength:
+                if not start > index*(maxSongLength+1) or not dur+start < index*maxSongLength:
                     for j in range(start,start+dur):
-                        if j - index*maxSongLength >= 0:
+                        if j - index*maxSongLength >= 0 and j - index*maxSongLength < maxSongLength:
                             matrix[pitch-lowerBoundNote,j - index*maxSongLength] = 255
-                else:
-                    new_index = i
-                    break
 
-            imwrite(midi_path.split("/")[-1].replace(".mid",f"_{instrument_name}_{index}.png"),matrix.astype(np.uint8))
-            index += 1
-            repetitions+=1
+            if matrix.any(): # If matrix contains no notes (only zeros) don't save it
+                imwrite(midi_path.split("/")[-1].replace(".mid",f"_{instrument_name}_{index}.png"),matrix.astype(np.uint8))
+                index += 1
+            else:
+                break
 
-import sys
-midi_path = sys.argv[1]
-midi2image(midi_path)
+if __name__ == "__main__":
+    midi_path = sys.argv[1]
+
+    if len(sys.argv) >= 3:
+        max_repetitions = int(sys.argv[2])
+        midi2image(midi_path, max_repetitions)
+    else:
+        midi2image(midi_path)
