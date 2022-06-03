@@ -28,7 +28,7 @@ def get_notes(notes_to_parse):
         elif isinstance(element, chord.Chord):
             if element.isRest:
                 continue
-            for chord_note in element.notes:
+            for chord_note in element:
                 start.append(element.offset)
                 durations.append(extractDuration(element))
                 notes.append(extractNote(chord_note))
