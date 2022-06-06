@@ -14,11 +14,11 @@ This script relies on the music21 library to parse and create MIDI files. The ex
 
 ## Requirements
 - python 3
-- python libraries (Try something like: `pip install music21`)
+- python packages (Try something like: `pip install -r requirements.txt`)
   - music21
   - imageio
   - numpy
-  - PIL (Pillow)
+  - Pillow
 
 ## Usage
 There are two scripts, one for converting a MIDI into images and the other one to convert an image into a MIDI.
